@@ -1,12 +1,25 @@
-import React from 'react'
-import Home from './pages/Home'
+import React, { useState } from "react";
+import Home from "./pages/Home";
+import { connect } from "react-redux";
+import { windowStage } from "./redux/actions";
 
-const App = () => {
+import { Window } from "@progress/kendo-react-dialogs";
+
+const App = ({ windowState, windowStage }) => {
+  const handleStageChange = (e) => {
+    windowStage(e.state);
+  };
   return (
-    <div>
-     <Home/>
-    </div>
-  )
-}
+    <Window
+      title={"Status"}
+      stage={windowState}
+      onStageChange={handleStageChange}
+    >
+      <Home />
+    </Window>
+  );
+};
 
-export default App
+export default connect((state) => ({ windowState: state.navbar.windowState }), {
+  windowStage,
+})(App);
